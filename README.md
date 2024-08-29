@@ -25,3 +25,5 @@ The Quotes App combines aesthetic design with functional technology to deliver a
 <img src="https://github.com/user-attachments/assets/a35f322c-1f6e-4504-a7a5-89476355b283" height=65% width=22%>
 <img src="https://github.com/user-attachments/assets/bcc20730-11df-450d-a8c9-de6bdc4ff25b" height=65% width=22%>
 <img src="https://github.com/user-attachments/assets/9f32ba98-dca0-4006-bf2c-3391f67f09e9" height=65% width=22%>
+
+https://github.com/user-attachments/assets/e7d8fc14-7b99-48fd-90e0-91136a6aa26f
