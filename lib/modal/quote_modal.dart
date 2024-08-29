@@ -16,7 +16,7 @@ class QuotesModel
       'quote': quote,
       'author': author,
       'category': category,
-      'is_favorite': isFavorite ? 1 : 0,
+      'is_favorite': isFavorite ? 0 : 1,
     };
   }
 

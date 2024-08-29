@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
 import 'package:quotes_app_databse/helper/database_helper.dart';
@@ -17,6 +18,14 @@ class QuotesController extends GetxController {
   RxList<QuotesModel> favouriteQuotes = <QuotesModel>[].obs;
   RxList<String> favouriteCategories = <String>[].obs;
   RxInt indexForGlobalUse = 0.obs;
+  int check = 0;
+  RxString expandedCategory = ''.obs;
+
+
+  // Method to set the expanded category
+  void setExpandedCategory(String category) {
+    expandedCategory.value = category;
+  }
 
   List<Map<String, String>> category = [
     {
@@ -109,6 +118,7 @@ class QuotesController extends GetxController {
     super.onInit();
     initDb();
     fetchApiData();
+    readFavouriteQuote();
   }
 
   Future<RxList<QuotesModel>> fetchApiData() async {
@@ -141,5 +151,50 @@ class QuotesController extends GetxController {
 
   Future initDb() async {
     await DatabaseHelper.databaseHelper.database;
+  }
+
+  void checkFavouriteExistBefore(QuotesModel quote) {
+    check = 0;
+    for (int i = 0; i < favouriteQuotes.length; i++) {
+      if (quote.quote == favouriteQuotes[i].quote) {
+        check = 1;
+        Get.snackbar('Already', 'The quote is already added to favourite!',
+            snackPosition: SnackPosition.BOTTOM,
+            colorText: CupertinoColors.white);
+      }
+    }
+    if (check == 0) {
+      insertFavouriteQuote(quote);
+      check = 1;
+    }
+  }
+
+  Future<void> deleteFavouriteQuote(int id) async {
+    await DatabaseHelper.databaseHelper.deleteFavouriteQuote(id);
+    readFavouriteQuote();
+    Get.snackbar(
+      'Removed',
+      'Quote removed from favourite',
+      snackPosition: SnackPosition.BOTTOM,
+      colorText: CupertinoColors.white,
+    );
+  }
+
+  void toggleColorOfFavourite(int index){
+    quotes[index].isFavorite = true;
+    quotes.refresh();
+  }
+
+  Future<void> insertFavouriteQuote(QuotesModel quote) async {
+    await DatabaseHelper.databaseHelper.addFavouriteInDatabase(
+        quote.quote, quote.author, quote.category, quote.isFavorite ? 0 : 1);
+    Get.snackbar('Added!', 'Quote added to favourite',
+        snackPosition: SnackPosition.BOTTOM, colorText: CupertinoColors.white);
+    readFavouriteQuote();
+  }
+
+  Future<void> readFavouriteQuote() async {
+    favouriteQuotes.value =
+        await DatabaseHelper.databaseHelper.readFavouriteQuotes();
   }
 }

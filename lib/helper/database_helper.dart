@@ -25,11 +25,44 @@ class DatabaseHelper {
       CREATE TABLE $tableName (
       id INTEGER PRIMARY AUTOINCREMENT,
       quote TEXT NOT NULL,
-      author TEXT NOT NULL
+      author TEXT NOT NULL,
+      isFavourite INTEGER DEFAULT 0,
       )
       ''';
         db.execute(sql);
       },
     );
+  }
+
+  Future<int> addFavouriteInDatabase(
+      String quote, String author, String category, int isFavourite) async {
+    final db = await database;
+    String sql = '''
+    INSERT INTO $tableName (quote, author, category, isFavourite)
+    VALUES (?, ?, ?, ?)
+    ''';
+    List args = [quote, author, category, isFavourite];
+    return await db!.rawInsert(sql, args);
+  }
+
+  Future<List<QuotesModel>> readFavouriteQuotes() async {
+    final db = await database;
+    String sql = '''
+    SELECT * FROM $tableName
+    ''';
+    final map = await db!.rawQuery(sql);
+    return List.generate(
+      map.length,
+      (index) => QuotesModel.fromMap(map[index]),
+    );
+  }
+
+  Future<int> deleteFavouriteQuote(int id) async {
+    final db = await database;
+    String sql = '''
+    DELETE FROM $tableName WHERE id = ?
+    ''';
+    List args = [id];
+    return await db!.rawDelete(sql, args);
   }
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
-import 'package:quotes_app_databse/view/screens/category_screen.dart';
-import 'package:quotes_app_databse/view/screens/like_screen.dart';
 import '../../controller/quotes_controller.dart';
+import 'category_screen.dart';
+import 'like_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
       body: Stack(
         children: [
           Obx(
-            () {
+                () {
               if (controller.quoteList.isEmpty) {
                 return const Center(
                   child: CircularProgressIndicator(),
@@ -32,19 +32,19 @@ class HomeScreen extends StatelessWidget {
                 ignoreUserGestureWhileAnimating: true,
                 itemCount: controller.quotes.length,
                 itemBuilder: (context, index) {
-                  // if index goes out of bound assigning index = 0
                   index = index % controller.quotes.length;
+                   image = controller.initialImages.isNotEmpty &&
+                      index < controller.initialImages.length
+                      ? controller.initialImages[index]
+                      : 'assets/img/love1.jpg';
 
-                  if (index >= controller.quotes.length) {
-                    return Container(); // if index is out of bound
-                  }
                   return Container(
                     height: double.infinity,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         fit: BoxFit.cover,
-                        image: AssetImage(controller.initialImages[index]),
+                        image: AssetImage(image),
                       ),
                     ),
                     child: Container(
@@ -82,12 +82,23 @@ class HomeScreen extends StatelessWidget {
                             ),
                             textAlign: TextAlign.right,
                           ),
-                          IconButton(
-                            onPressed: () async {
-                              // await controller.addQuoteToFavorites(index);
-                            },
-                            icon: const Icon(
-                              Icons.favorite_outline,
+                          Obx(
+                                () => IconButton(
+                              onPressed: () {
+                                controller.checkFavouriteExistBefore(
+                                    controller.quotes[index]);
+                                controller.toggleColorOfFavourite(index);
+                              },
+                              icon: (controller.quotes[index].isFavorite)
+                                  ? const Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                                size: 30,
+                              )
+                                  : const Icon(
+                                Icons.favorite_border_outlined,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ],
@@ -127,18 +138,26 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           Positioned(
-            right: 90,
+            right: 20,
             top: 40,
             child: GestureDetector(
-              // onTap: () => favouriteSheet(context, controller),
-              child: Container(
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white.withOpacity(0.5),
+              onTap: () {
+                Get.to(() => const LikedQuotesScreen(), transition: Transition.rightToLeftWithFade);
+              },
+              child: Hero(
+                tag: 'background',
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white.withOpacity(0.5),
+                  ),
+                  child: const Icon(
+                    Icons.favorite,
+                    color: Colors.white,
+                  ),
                 ),
-                child: const Icon(Icons.favorite),
               ),
             ),
           ),
@@ -148,4 +167,5 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+String image = '';
 var controller = Get.put(QuotesController());
