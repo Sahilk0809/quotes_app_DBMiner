@@ -16,12 +16,14 @@ class HomeScreen extends StatelessWidget {
       body: Stack(
         children: [
           Obx(
-                () {
+            () {
               if (controller.quoteList.isEmpty) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
+
+              // liquidSwipe this make the slide wavy
               return LiquidSwipe.builder(
                 liquidController: controller.liquidController,
                 slideIconWidget: const Icon(Icons.arrow_back_outlined),
@@ -32,9 +34,11 @@ class HomeScreen extends StatelessWidget {
                 ignoreUserGestureWhileAnimating: true,
                 itemCount: controller.quotes.length,
                 itemBuilder: (context, index) {
+                  //checking for the index is out bound or not
+
                   index = index % controller.quotes.length;
-                   image = controller.initialImages.isNotEmpty &&
-                      index < controller.initialImages.length
+                  image = controller.initialImages.isNotEmpty &&
+                          index < controller.initialImages.length
                       ? controller.initialImages[index]
                       : 'assets/img/love1.jpg';
 
@@ -53,6 +57,9 @@ class HomeScreen extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          SizedBox(
+                            height: height * 0.2,
+                          ),
                           Text(
                             controller.quotes[index].category,
                             style: const TextStyle(
@@ -62,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                           SizedBox(
-                            height: height * 0.02,
+                            height: height * 0.025,
                           ),
                           Text(
                             controller.quotes[index].quote,
@@ -73,33 +80,59 @@ class HomeScreen extends StatelessWidget {
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 12),
-                          Text(
-                            '- ${controller.quotes[index].author}',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontStyle: FontStyle.italic,
-                              color: Colors.white,
-                            ),
-                            textAlign: TextAlign.right,
-                          ),
-                          Obx(
-                                () => IconButton(
-                              onPressed: () {
-                                controller.checkFavouriteExistBefore(
-                                    controller.quotes[index]);
-                                controller.toggleColorOfFavourite(index);
-                              },
-                              icon: (controller.quotes[index].isFavorite)
-                                  ? const Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                                size: 30,
-                              )
-                                  : const Icon(
-                                Icons.favorite_border_outlined,
-                                color: Colors.white,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Text(
+                                  '- ${controller.quotes[index].author}',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontStyle: FontStyle.italic,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.right,
+                                ),
                               ),
-                            ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: height * 0.2,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.ios_share_outlined,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              SizedBox(
+                                width: width * 0.1,
+                              ),
+                              Obx(
+                                () => IconButton(
+                                  onPressed: () {
+                                    // checking that quote exist before in list or not
+                                    controller.checkFavouriteExistBefore(
+                                        controller.quotes[index]);
+                                    controller.toggleColorOfFavourite(index);
+                                  },
+                                  icon: (controller.quotes[index].isFavorite)
+                                      ? const Icon(
+                                          Icons.favorite,
+                                          color: Colors.red,
+                                          size: 30,
+                                        )
+                                      : const Icon(
+                                          Icons.favorite_border_outlined,
+                                          color: Colors.white,
+                                          size: 30,
+                                        ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -142,7 +175,8 @@ class HomeScreen extends StatelessWidget {
             top: 40,
             child: GestureDetector(
               onTap: () {
-                Get.to(() => const LikedQuotesScreen(), transition: Transition.rightToLeftWithFade);
+                Get.to(() => const LikedQuotesScreen(),
+                    transition: Transition.rightToLeftWithFade);
               },
               child: Hero(
                 tag: 'background',

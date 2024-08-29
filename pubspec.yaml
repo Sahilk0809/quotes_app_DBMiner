@@ -40,6 +40,7 @@ dependencies:
   sqflite: ^2.3.3+1
   path: ^1.9.0
   liquid_swipe: ^3.1.0
+  lottie: ^3.1.2
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/img/
+    - assets/lottie/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

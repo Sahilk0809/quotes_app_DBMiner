@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../controller/quotes_controller.dart';
 import '../../modal/quote_modal.dart';
 import 'home_screen.dart';
 
@@ -94,10 +93,10 @@ class LikedQuotesScreen extends StatelessWidget {
                             shadowColor: Colors.black38,
                             color: Colors.transparent,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(10),
                               child: ExpansionTile(
                                 backgroundColor: Colors.white.withOpacity(0.1),
                                 collapsedBackgroundColor:
@@ -152,6 +151,7 @@ class LikedQuotesScreen extends StatelessWidget {
                                       ),
                                       trailing: IconButton(
                                         onPressed: () {
+                                          // deleting quote from favourite
                                           controller
                                               .deleteFavouriteQuote(quote.id!);
                                         },

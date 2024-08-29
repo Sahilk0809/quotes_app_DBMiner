@@ -30,7 +30,7 @@ class QuotesController extends GetxController {
   List<Map<String, String>> category = [
     {
       'category': 'General',
-      'img': 'assets/img/love2.jpg',
+      'img': 'assets/img/success2.jpg',
     },
     {
       'category': 'Life',
@@ -38,11 +38,11 @@ class QuotesController extends GetxController {
     },
     {
       'category': 'Love',
-      'img': 'assets/img/love1.jpg',
+      'img': 'assets/img/love5.jpeg',
     },
     {
       'category': 'Success',
-      'img': 'assets/img/success2.jpg',
+      'img': 'assets/img/success4.jpeg',
     },
     {
       'category': 'Motivation',
@@ -62,15 +62,14 @@ class QuotesController extends GetxController {
     },
     {
       'category': 'Humor',
-      'img': 'assets/img/humor2.jpeg',
+      'img': 'assets/img/humor5.webp',
     },
   ];
 
   Map<String, List<String>> imageList = {
     'Life': [
       'assets/img/nature1.jpg',
-      'assets/img/nature2.jpeg',
-      'assets/img/nature3.jpeg',
+      'assets/img/nature2.jpg',
       'assets/img/nature4.jpg',
       'assets/img/nature5.jpg',
     ],
@@ -78,6 +77,7 @@ class QuotesController extends GetxController {
       'assets/img/love1.jpg',
       'assets/img/love2.jpg',
       'assets/img/love3.jpg',
+      'assets/img/love5.jpeg',
       'assets/img/love4.webp',
     ],
     'Success': [
@@ -107,9 +107,9 @@ class QuotesController extends GetxController {
     ],
     'Humor': [
       'assets/img/humor.jpg',
-      'assets/img/humor2.jpeg',
       'assets/img/humor3.jpg',
       'assets/img/humor4.jpg',
+      'assets/img/humor5.webp',
     ],
   };
 

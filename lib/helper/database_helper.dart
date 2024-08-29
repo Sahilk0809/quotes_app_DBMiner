@@ -23,10 +23,11 @@ class DatabaseHelper {
       onCreate: (db, version) {
         String sql = '''
       CREATE TABLE $tableName (
-      id INTEGER PRIMARY AUTOINCREMENT,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       quote TEXT NOT NULL,
       author TEXT NOT NULL,
-      isFavourite INTEGER DEFAULT 0,
+      category TEXT NOT NULL,
+      isFavourite INTEGER DEFAULT 0
       )
       ''';
         db.execute(sql);
