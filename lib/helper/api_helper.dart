@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 class ApiHelper{
-  Future<Map> fetchApi(String filter) async {
-    String api = 'https://api.quotable.io/quotes?tags=$filter';
+  Future<List> fetchApi() async {
+    String api = 'https://sheetdb.io/api/v1/erjiyupf985k3';
     Uri url = Uri.parse(api);
     Response response = await http.get(url);
 
@@ -13,7 +13,7 @@ class ApiHelper{
       final data = jsonDecode(response.body);
       return data;
     } else{
-      return {};
+      throw 'Error';
     }
   }
 }

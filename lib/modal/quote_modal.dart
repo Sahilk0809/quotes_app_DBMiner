@@ -1,26 +1,32 @@
-class QuoteModal {
-  late List<Results> results;
+class QuotesModel
+{
+  final int? id;
+  String quote,author,category;
+  bool isFavorite;
 
-  QuoteModal({required this.results});
+  QuotesModel({this.id,required this.quote,required  this.author,required  this.category,this.isFavorite=false});
 
-  factory QuoteModal.fromMap(Map m1) {
-    return QuoteModal(
-        results: (m1['results'] as List).map((e) => Results.fromMap(e),).toList());
+  factory QuotesModel.fromJson(Map json)
+  {
+    return QuotesModel(quote: json['quote'], author: json['author'], category: json['category'],);
   }
-}
+  Map<String, dynamic> toMap() {
+    return {
 
-class Results {
-  late String content, author;
-  late List tags;
+      'quote': quote,
+      'author': author,
+      'category': category,
+      'is_favorite': isFavorite ? 1 : 0,
+    };
+  }
 
-  Results({
-    required this.content,
-    required this.author,
-    required this.tags,
-  });
-
-  factory Results.fromMap(Map m1) {
-    return Results(
-        content: m1['content'], author: m1['author'], tags: m1['tags'] ?? '');
+  factory QuotesModel.fromMap(Map<String, dynamic> map) {
+    return QuotesModel(
+      id: map['id'], // Retrieve ID from database
+      quote: map['quote'],
+      author: map['author'],
+      category: map['category'],
+      isFavorite: map['is_favorite'] == 1, // Convert from integer to boolean
+    );
   }
 }
