@@ -1,6 +1,16 @@
+import 'dart:io';
+import 'dart:ui' as ui;
+
+import 'package:clipboard/clipboard.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:liquid_swipe/liquid_swipe.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_extend/share_extend.dart';
 import '../../controller/quotes_controller.dart';
 import 'category_screen.dart';
 import 'like_screen.dart';
@@ -101,15 +111,164 @@ class HomeScreen extends StatelessWidget {
                             height: height * 0.2,
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              const Icon(
-                                Icons.ios_share_outlined,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                              SizedBox(
-                                width: width * 0.1,
+                              IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => Dialog.fullscreen(
+                                      backgroundColor: Colors.black,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            child: RepaintBoundary(
+                                              key: repaintKey,
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                padding:
+                                                    const EdgeInsets.all(15.0),
+                                                width: double.infinity,
+                                                decoration: BoxDecoration(
+                                                  image: DecorationImage(
+                                                    fit: BoxFit.cover,
+                                                    image: AssetImage(image),
+                                                  ),
+                                                ),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      controller
+                                                          .quotes[index].quote,
+                                                      style: const TextStyle(
+                                                        fontSize: 24,
+                                                        color: Colors.white,
+                                                      ),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                    const SizedBox(height: 12),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  right: 10),
+                                                          child: Text(
+                                                            '- ${controller.quotes[index].author}',
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 18,
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .italic,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                            textAlign:
+                                                                TextAlign.right,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .spaceAround,
+                                            children: [
+                                              IconButton(
+                                                onPressed: () async {
+                                                  RenderRepaintBoundary
+                                                  boundary =
+                                                  repaintKey
+                                                      .currentContext!
+                                                      .findRenderObject()
+                                                  as RenderRepaintBoundary;
+
+                                                  ui.Image image =
+                                                  await boundary
+                                                      .toImage();
+                                                  ByteData? byteData =
+                                                  await image.toByteData(
+                                                      format: ui
+                                                          .ImageByteFormat
+                                                          .png);
+
+                                                  Uint8List img =
+                                                  byteData!.buffer
+                                                      .asUint8List();
+
+                                                  final imgPath =
+                                                  await getApplicationDocumentsDirectory();
+                                                  final file = File(
+                                                      "${imgPath.path}/img.png");
+
+                                                  file.writeAsBytes(
+                                                      img);
+                                                  ShareExtend.share(
+                                                      file.path,
+                                                      'image');
+                                                },
+                                                icon: const Icon(
+                                                  Icons.share,
+                                                  color: Colors.white,
+                                                  size: 30,
+                                                ),
+                                              ),
+                                              IconButton(
+                                                onPressed: () async {
+                                                  RenderRepaintBoundary boundary = repaintKey
+                                                      .currentContext!
+                                                      .findRenderObject()
+                                                  as RenderRepaintBoundary;
+
+                                                  ui.Image image = await boundary.toImage();
+
+                                                  ByteData? byteData = await image.toByteData(
+                                                      format: ui.ImageByteFormat.png);
+
+                                                  Uint8List img =
+                                                  byteData!.buffer.asUint8List();
+
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                    const SnackBar(
+                                                      behavior: SnackBarBehavior.floating,
+                                                      margin: EdgeInsets.all(10),
+                                                      content: Text('Saved to the gallery!'),
+                                                    ),
+                                                  );
+                                                  ImageGallerySaver.saveImage(img);
+                                                },
+                                                icon: const Icon(
+                                                  Icons.save_alt,
+                                                  color: Colors.white,
+                                                  size: 30,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(
+                                  Icons.ios_share,
+                                  color: Colors.white,
+                                  size: 28,
+                                ),
                               ),
                               Obx(
                                 () => IconButton(
@@ -130,6 +289,21 @@ class HomeScreen extends StatelessWidget {
                                           color: Colors.white,
                                           size: 30,
                                         ),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () {
+                                  FlutterClipboard.copy(
+                                      controller.quotes[index].quote);
+                                  Get.snackbar(
+                                      'Copied!', 'Quote copied to clipboard',
+                                      snackPosition: SnackPosition.BOTTOM,
+                                      colorText: CupertinoColors.white);
+                                },
+                                icon: const Icon(
+                                  Icons.copy,
+                                  color: Colors.white,
+                                  size: 28,
                                 ),
                               ),
                             ],
@@ -201,5 +375,6 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+var repaintKey = GlobalKey();
 String image = '';
 var controller = Get.put(QuotesController());
