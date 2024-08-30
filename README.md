@@ -21,7 +21,10 @@ Quotes App is a sophisticated and visually appealing Flutter application designe
 The Quotes App combines aesthetic design with functional technology to deliver a user-friendly platform for discovering, saving, and enjoying quotes. Whether you’re looking for daily inspiration or simply want to explore a diverse range of quotes, this app offers a seamless and visually captivating experience.
 
 <img src="https://github.com/user-attachments/assets/0fa896c2-62b5-4733-b1a6-ac07e27ad915" height=65% width=22%>
-<img src="https://github.com/user-attachments/assets/d9e397a2-2df8-4cc0-8462-c46aa90a4676" height=65% width=22%>
+<img src="https://github.com/user-attachments/assets/f736eaf9-ca68-4b98-b280-881018eacfae" height=65% width=22%>
 <img src="https://github.com/user-attachments/assets/a35f322c-1f6e-4504-a7a5-89476355b283" height=65% width=22%>
 <img src="https://github.com/user-attachments/assets/bcc20730-11df-450d-a8c9-de6bdc4ff25b" height=65% width=22%>
 <img src="https://github.com/user-attachments/assets/9f32ba98-dca0-4006-bf2c-3391f67f09e9" height=65% width=22%>
+
+<!--https://github.com/user-attachments/assets/e7d8fc14-7b99-48fd-90e0-91136a6aa26f-->
+https://github.com/user-attachments/assets/0296a1a4-7177-4a8a-bc19-cdf5393f2639
